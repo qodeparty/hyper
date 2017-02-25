@@ -1,56 +1,101 @@
 {
-  "name"        : "hyper",
-  "description" : "Hyper Server for NodeJS",
-  "version" : "0.0.2",
-  "author" : "Qodeninja <dev@qodeninja.com> (http://qodeparty.com/dist/)",
-  "licenses" : [
+  "_args": [
+    [
+      {
+        "raw": "hyper",
+        "scope": null,
+        "escapedName": "hyper",
+        "name": "hyper",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/media/sf_code/src/projects"
+    ]
+  ],
+  "_from": "hyper@latest",
+  "_id": "hyper@0.0.2",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/hyper",
+  "_npmUser": {
+    "name": "qodeninja",
+    "email": "qodeninja@outlook.com"
+  },
+  "_npmVersion": "2.0.0",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "hyper",
+    "scope": null,
+    "escapedName": "hyper",
+    "name": "hyper",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/hyper/-/hyper-0.0.2.tgz",
+  "_shasum": "0b65c5c55ecf1d8ffc82c08300a22e332892e03a",
+  "_shrinkwrap": null,
+  "_spec": "hyper",
+  "_where": "/media/sf_code/src/projects",
+  "author": {
+    "name": "Avi Damasi",
+    "email": "dev@qodeninja.com",
+    "url": "http://qodeparty.com/dist/"
+  },
+  "bugs": {
+    "url": "https://github.com/qodeparty/hyper/issues"
+  },
+  "dependencies": {
+    "lodash": "latest"
+  },
+  "description": "Hyper Network Server for NodeJS",
+  "devDependencies": {
+    "forever": "latest",
+    "grunt": "latest",
+    "grunt-contrib-jshint": "latest",
+    "grunt-contrib-nodeunit": "latest",
+    "grunt-contrib-uglify": "latest",
+    "nodeunit": "latest"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "0b65c5c55ecf1d8ffc82c08300a22e332892e03a",
+    "tarball": "https://registry.npmjs.org/hyper/-/hyper-0.0.2.tgz"
+  },
+  "engine": "node >=0.10.0",
+  "gitHead": "4ac5b7ec48ed85a15aa37682edffe121837568c5",
+  "homepage": "https://github.com/qodeparty/hyper",
+  "keywords": [
+    "hyper",
+    "hyperjs",
+    "λ",
+    "hat",
+    "maker"
+  ],
+  "licenses": [
     {
       "type": "Apache-2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   ],
-  "keywords" : [
-    "hyper",
-    "cluster",
-    "network",
-    "app",
-    "rest"
+  "main": "./index.js",
+  "maintainers": [
+    {
+      "name": "qodeninja",
+      "email": "qodeninja@outlook.com"
+    }
   ],
+  "name": "hyper",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
   "repository": {
     "type": "git",
-    "url": "https://github.com/qodeparty/hyper.git"
+    "url": "git+https://github.com/qodeparty/hyper.git"
   },
-  "main"        : "./index.js",
-  "dependencies": {
-    "async": "^2.1.4",
-    "body-parser": "^1.16.0",
-    "colors": "^1.1.2",
-    "compression": "^1.6.2",
-    "cookie-parser": "^1.4.3",
-    "cookie-session": "^1.2.0",
-    "errorhandler": "^1.5.0",
-    "express": "^4.14.1",
-    "express-session": "^1.15.0",
-    "jsonfile": "^2.4.0",
-    "lodash": "^4.17.4",
-    "method-override": "^2.3.7",
-    "mime-types": "^2.1.14",
-    "moment": "^2.17.1",
-    "morgan": "^1.8.0",
-    "multer": "^1.3.0",
-    "nib": "^1.1.2",
-    "pug": "latest",
-    "serve-favicon": "^2.3.2",
-    "stylus": "^0.54.5"
-  },
-  "devDependencies" : {
-      "nodeunit": "latest",
-      "forever" : "latest"
-  },
-
-  "engine" : "node >=0.10.0",
-  "scripts": {
-    "prepublish": "npm prune"
-  }
-
+  "scripts": {},
+  "version": "0.0.2"
 }
