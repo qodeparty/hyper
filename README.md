@@ -1,4 +1,4 @@
-████████████████████████████████████████████████████████████████████████████████
+██████████████████████████████████████████████████████████████████████████████
 
                             __
                             \ \
@@ -11,16 +11,16 @@
                                                                      
                                  λyper v0.3
 
-████████████████████████████████████████████████████████████████████████████████
-  ## Meta
+██████████████████████████████████████████████████████████████████████████████
+  ##Meta
 
-  ### λyper
+  ###λyper
 
   Hyper is the maker of faster masters.
 
 ---
 
-  ### Meet Hyper's Hat
+  ###Meet Hyper's Hat
 
   Similar to beloved JavaScript projects like jQuery and Underscore, Hyper makes use of a vanity 
   symbol to denote its realm and namespace. 
