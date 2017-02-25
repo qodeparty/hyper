@@ -1,0 +1,8 @@
+bak.*
+*-local.*
+*.bak
+bak-*
+*.key
+*.log
+*.pid
+
