@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# appd    Start/Stop the webapp
+# hyperd    Start/Stop the webapp
 #
 # chkconfig: 345 64 36
 # description: Launcher daemon for Scale Web App
@@ -12,11 +12,11 @@ set -o pipefail
 
 #-----------------------------
 
-  NAME=appd
-  APP_JS="nox.js"
+  NAME=hyperd
+  APP_JS="hyper.js"
   TIMESTAMP=$(date +%s)
 
-  export NODE_DAEMON=noxd-forever
+  export NODE_DAEMON=hyperd-forever
 
   awk=awk
   sed=sed

@@ -1,141 +1,141 @@
 #!/bin/bash
 #
-# noxb    update build and configuration
+# hyperbuild    update build and configuration
 
-    #-----------------------------------------------------------------
-
-
-
-
-    #-----------------------------------------------------------------
-    set -o pipefail
-    shopt -s expand_aliases
-    CURR_DIR="$(pwd)"
-    #-----------------------------------------------------------------
+		#-----------------------------------------------------------------
 
 
 
 
-    #-----------------------------------------------------------------
-
-    clear_eol=$(tput el)
-    purple=$(tput setaf 5)
-    red=$(tput setaf 1)
-    green=$(tput setaf 2)
-    yellow=$(tput setaf 11)
-    orange=$(tput setaf 3)
-    blue=$(tput setaf 12)
-    cyan=$(tput setaf 14)
-    grey=$(tput setaf 247)
-    white=$(tput setaf 15)
-    whitedim=$(tput setaf 243)
-    PASS='\xE2\x9C\x93';
-    FAIL='\xE2\x9C\x97';
-
-    #-----------------------------------------------------------------
+		#-----------------------------------------------------------------
+		set -o pipefail
+		shopt -s expand_aliases
+		CURR_DIR="$(pwd)"
+		#-----------------------------------------------------------------
 
 
 
 
-    #-----------------------------------------------------------------
+		#-----------------------------------------------------------------
 
-    function command_exists () {
-        type "$1" &> /dev/null ;
-    }
+		clear_eol=$(tput el)
+		purple=$(tput setaf 5)
+		red=$(tput setaf 1)
+		green=$(tput setaf 2)
+		yellow=$(tput setaf 11)
+		orange=$(tput setaf 3)
+		blue=$(tput setaf 12)
+		cyan=$(tput setaf 14)
+		grey=$(tput setaf 247)
+		white=$(tput setaf 15)
+		whitedim=$(tput setaf 243)
+		PASS='\xE2\x9C\x93';
+		FAIL='\xE2\x9C\x97';
 
-    #-----------------------------------------------------------------
-
-
-
-
-    #-----------------------------------------------------------------
-
-    function git_revision () {
-      git rev-list HEAD | wc -l | tr -d ' ' > git.log
-      #$(git rev-list HEAD | wc -l | tr -d ' ')
-    }
-
-    #-----------------------------------------------------------------
-
-
-
-    #-----------------------------------------------------------------
-    # tar -cvzf node_modules.tar.gz node_modules/
-    # @npm -g ls | grep -v 'npm@' | awk '/@/ {print $2}' | awk -F@ '{print $1}' | xargs npm -g rm
-    # @git archive --format zip --output ./scale-zero.bak.zip master
-    # nohup node app/app.js > server.log &
-    # tail -f server.log
-    #
-    function setup_config() {
-      NOX_CONFIG_FILE="$1"
-      NOX_TIMESTAMP=$(date +%s)
-      NOX_INSTALL_DATE=$(date +%m-%d-%y)
-
-      if [ ! -z "$1" ]; then
-        NOX_INSTALL_CONFIG=$(cat <<-EOF
-          #!/bin/bash
-          export NOX_SETUP_ROOT="${NOX_SETUP_ROOT}"
-          export NOX_TIMESTAMP="$(date +%m-%d-%y)"
-        EOF
-        );
-        echo "$NOX_INSTALL_CONFIG" > ${NOX_CONFIG_FILE}
-        export NOX_CONFIG_FILE="$1"
-
-      else
-        echo "Missing .NOX path"
-        false
-      fi
-
-      unset NOX_INSTALL_CONFIG
-    }
-
-    function stub(){
-      echo "Thank you for installing!"
-    }
-
-    function usage() {
-      cat <<-EOF
-        Usage: noxbuild [-cdnt] <command> [subcommand]
-      EOF
-    }
-
-    #-----------------------------------------------------------------
+		#-----------------------------------------------------------------
 
 
 
 
-    #-----------------------------------------------------------------
-    function nuke(){
+		#-----------------------------------------------------------------
 
-      echo hi
-    }
-    #-----------------------------------------------------------------
+		function command_exists () {
+				type "$1" &> /dev/null ;
+		}
+
+		#-----------------------------------------------------------------
 
 
 
 
-    #-----------------------------------------------------------------
+		#-----------------------------------------------------------------
 
-    case "$1" in
-        update)
-          usage
-          #checkMessage
-          ;;
-        rev)
-          usage
-          ;;
-        config)
-          stub
-          setup_config "$2"
-          ;;
-        local)
-          usage
-          true
-          ;;
-        *)
-      echo $"Usage: $NAME { stub }"
-      exit 1
-    esac
-    exit $?
+		function git_revision () {
+			git rev-list HEAD | wc -l | tr -d ' ' > git.log
+			#$(git rev-list HEAD | wc -l | tr -d ' ')
+		}
+
+		#-----------------------------------------------------------------
+
+
+
+		#-----------------------------------------------------------------
+		# tar -cvzf node_modules.tar.gz node_modules/
+		# @npm -g ls | grep -v 'npm@' | awk '/@/ {print $2}' | awk -F@ '{print $1}' | xargs npm -g rm
+		# @git archive --format zip --output ./scale-zero.bak.zip master
+		# nohup node app/app.js > server.log &
+		# tail -f server.log
+		#
+		function setup_config() {
+			HYPER_CONFIG_FILE="$1"
+			HYPER_TIMESTAMP=$(date +%s)
+			HYPER_INSTALL_DATE=$(date +%m-%d-%y)
+
+			if [ ! -z "$1" ]; then
+				NOX_INSTALL_CONFIG=$(cat <<-EOF
+					#!/bin/bash
+					export HYPER_SETUP_ROOT="${NOX_SETUP_ROOT}"
+					export HYPER_TIMESTAMP="$(date +%m-%d-%y)"
+				EOF
+				);
+				echo "$HYPER_INSTALL_CONFIG" > ${HYPER_CONFIG_FILE}
+				export HYPER_CONFIG_FILE="$1"
+
+			else
+				echo "Missing .HYPER path"
+				false
+			fi
+
+			unset HYPER_INSTALL_CONFIG
+		}
+
+		function stub(){
+			echo "Thank you for installing!"
+		}
+
+		function usage() {
+			cat <<-EOF
+				Usage: hyperbuild [-cdnt] <command> [subcommand]
+			EOF
+		}
+
+		#-----------------------------------------------------------------
+
+
+
+
+		#-----------------------------------------------------------------
+		function nuke(){
+
+			echo hi
+		}
+		#-----------------------------------------------------------------
+
+
+
+
+		#-----------------------------------------------------------------
+
+		case "$1" in
+				update)
+					usage
+					#checkMessage
+					;;
+				rev)
+					usage
+					;;
+				config)
+					stub
+					setup_config "$2"
+					;;
+				local)
+					usage
+					true
+					;;
+				*)
+			echo $"Usage: $NAME { stub }"
+			exit 1
+		esac
+		exit $?
 
 

@@ -14,7 +14,7 @@
     ]
   ],
   "_from": "hyper@latest",
-  "_id": "hyper@0.0.2",
+  "_id": "hyper@0.0.3",
   "_inCache": true,
   "_installable": true,
   "_location": "/hyper",
@@ -43,7 +43,7 @@
   "_where": "/media/sf_code/src/projects",
   "author": {
     "name": "Avi Damasi",
-    "email": "dev@qodeninja.com",
+    "email": "qodeninja@outlook.com",
     "url": "http://qodeparty.com/dist/"
   },
   "bugs": {
@@ -101,7 +101,7 @@
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   ],
-  "main": "./index.js",
+  "main": "./hyper.js",
   "maintainers": [
     {
       "name": "qodeninja",
