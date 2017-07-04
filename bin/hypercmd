@@ -62,19 +62,21 @@
 		#-----------------------------------------------------------------
 		# tar -cvzf node_modules.tar.gz node_modules/
 		# @npm -g ls | grep -v 'npm@' | awk '/@/ {print $2}' | awk -F@ '{print $1}' | xargs npm -g rm
-		# @git archive --format zip --output ./scale-zero.bak.zip master
+		# @git archive --format zip --output ./hyper-zero.bak.zip master
 		# nohup node app/app.js > server.log &
 		# tail -f server.log
-		#
+
+
 		function setup_config() {
 			HYPER_CONFIG_FILE="$1"
 			HYPER_TIMESTAMP=$(date +%s)
-			HYPER_INSTALL_DATE=$(date +%m-%d-%y)
+			HYPER_SETUP_ROOT=""
+
 
 			if [ ! -z "$1" ]; then
-				NOX_INSTALL_CONFIG=$(cat <<-EOF
+				HYPPER_INSTALL_CONFIG=$(cat <<-EOF
 					#!/bin/bash
-					export HYPER_SETUP_ROOT="${NOX_SETUP_ROOT}"
+					export HYPER_SETUP_ROOT="${HYPER_SETUP_ROOT}"
 					export HYPER_TIMESTAMP="$(date +%m-%d-%y)"
 				EOF
 				);

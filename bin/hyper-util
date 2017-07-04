@@ -1,0 +1,193 @@
+#!/bin/bash
+#
+# hyperutil
+
+		#-----------------------------------------------------------------
+
+
+
+		#-----------------------------------------------------------------
+
+		clear_eol=$(tput el)
+		purple=$(tput setaf 5)
+		red=$(tput setaf 1)
+		green=$(tput setaf 2)
+		yellow=$(tput setaf 11)
+		orange=$(tput setaf 3)
+		blue=$(tput setaf 12)
+		cyan=$(tput setaf 14)
+		grey=$(tput setaf 247)
+		white=$(tput setaf 15)
+		whitedim=$(tput setaf 243)
+		PASS='\xE2\x9C\x93';
+		FAIL='\xE2\x9C\x97';
+
+		#-----------------------------------------------------------------
+
+
+
+		#-----------------------------------------------------------------
+		#
+		set -o pipefail
+		shopt -s expand_aliases
+		CURR_DIR="$(pwd)"
+
+		#-----------------------------------------------------------------
+
+
+
+		#-----------------------------------------------------------------
+
+		function mkp() {
+			mkdir -p "$*" && cd "$*" && pwd
+		}
+
+		function findin() {
+			find . -exec grep -q "$1" '{}' \; -print
+		}
+
+		function inpath () {
+			case ":$PATH:" in
+				*":$1:"*) return 1;;
+				*) return 0;;
+			esac
+		}
+
+		function add_path() {
+			for d; do
+				d=$(cd -- "$d" && { pwd -P || pwd; }) 2>/dev/null  # canonicalize symbolic links
+				if [ -z "$d" ]; then continue; fi  # skip nonexistent directory
+				case ":$PATH:" in
+					*":$d:"*) :;;
+					*) PATH=$PATH:$d;;
+				esac
+			done
+		}
+
+		function add_bin() {
+			local BIN_DIR="$PWD/${1:-bin}"
+			if [ -d $BIN_DIR ]; then
+				add_path $BIN_DIR
+			fi
+			echo "$green Added new bin $BIN_DIR $clear_eol "
+		}
+
+		function gunset(){
+			local PATTERN=$1
+			if [ -n $PATTERN ]; then
+				IFS="="
+				set | grep NOX* | while read -r line value ; do
+					#echo -e "$line"
+					unset $line
+				done
+			fi
+		}
+
+
+
+		function read_config() {
+			ifpipe
+			regex='\$\{([a-zA-Z_][a-zA-Z_0-9]*)\}'
+			while read line; do
+					while [[ "$line" =~ $regex ]]; do
+							param="${BASH_REMATCH[1]}"
+							line=${line//${BASH_REMATCH[0]}/${!param}}
+					done
+					echo $line
+			done
+
+		}
+
+		#-----------------------------------------------------------------
+
+
+		function safename(){
+			local name=$1
+			local ext=${2-""}
+			local cache=${3-""}
+			local count=0
+			#extension is optional but if provied adds dot
+			if [ -n "${cache}" ]; then ext="-${cache}"; fi
+			if [ -n "${ext}"   ]; then ext=".${ext}"; fi
+			local temp="${name}${cache}"
+			local base="${temp}"
+			#increment file
+			while [ -f "${temp}${ext}" ] || [ -f "${base}-${count}${ext}" ]; do
+				count=$[count + 1]
+				temp="${base}-${count}"
+			done
+			temp="${temp}${ext}"
+			printf "${temp}"
+		}
+
+		function util_tarup() {
+			local name=$1; shift
+			local list=("${@}")
+			local tarfile="$(safename ${name} tar)"
+			local tarcmd="tar -Hcf ${tarfile} ${list[@]}" #store symlink deref
+			${tarcmd} 2>&1 | grep -v "Removing leading"
+			#retun value
+			TAR_FILE=${tarfile}
+		}
+
+		#-----------------------------------------------------------------
+
+
+
+
+		#-----------------------------------------------------------------
+
+
+		function timestamp() {
+			echo -e $(date +%s)
+		}
+
+		function strip_comments(){
+			sed '/^#/ d' $1
+		}
+
+		function gunset(){
+			local PATTERN=$1
+			if [ -n $PATTERN ]; then
+				IFS="="
+				env | grep ${PATTERN} | while read -r line value ; do
+					echo -e "$line"
+					unset $line
+				done
+			fi
+		}
+
+		function asksure() {
+			echo -n "${1:-Are you sure (y/n)?}${x}"
+			while read -r -n 1 -s answer; do
+				if [[ $answer = [YyNn] ]]; then
+					[[ $answer = [Yy] ]] && retval=0
+					[[ $answer = [Nn] ]] && retval=1
+					break
+				fi
+			done
+
+			echo # just a final linefeed, optics...
+
+			return $retval
+		}
+
+		function exitfn() {
+			trap SIGINT              # Restore signal handling for SIGINT
+			echo; echo "Aarghh!!$1"  # Growl at user,
+			exit                     # then exit script.
+		}
+		#-----------------------------------------------------------------
+
+
+
+
+		#-----------------------------------------------------------------
+		#----------------------
+		#
+
+		if [[ "$0" == "$BASH_SOURCE" ]]; then
+			echo -e "$cyan(λ) Hyper-util cannot be run directly. Try 'hyper' $clear_eol";
+		fi
+
+

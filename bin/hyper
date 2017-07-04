@@ -2,8 +2,9 @@
 #
 #
 PID=$$
+stty -ctlecho #hide ctrl-c echo
 
-source ./bin/hyperutil
+source ./bin/hyper-util
 trap "exitfn $PID" INT
 
 DIR="${BASH_SOURCE%/*}"
@@ -11,22 +12,23 @@ DIR="${BASH_SOURCE%/*}"
 
 
 
-prompt="$clear_eol$cyan λ > $clear_eol$white"
+prompt="$clear_eol$cyan(λ) > $clear_eol$white"
 
 logo="$(cat $DIR/hyper.log)"
 
-echo -e "$cyan$logo$clear_eol";
+echo "$cyan$logo$clear_eol";
 #echo $PID
 
-getShell() {
+function getShell() {
   read -p "$prompt" COMMAND
-  printf "$yellow"
+  printf "$grey"
   arrCommand=(${COMMAND// / })
 
   for i in "${arrCommand[@]}"; do
-    echo "$i"
+    echo "arg => $i"
   done
 
+  printf "$yellow"
   case "$COMMAND" in
     pid|p*)
       echo $PID
@@ -36,13 +38,17 @@ getShell() {
       echo pid help test config
 
       ;;
-    conf|c*)
-      echo 'config params yay'
-
+    clear|cl*)
+      clear
+      echo "$cyan$logo$clear_eol";
+      ;;
+    conf|co*)
+      echo 'config'
+      $DIR/hypercmd config .hyper
       ;;
     status|st*)
       echo 'status'
-
+      $DIR/hypercmd status
       ;;
     rev)
       local LOCALREV=$(git rev-list HEAD | wc -l | tr -d ' ');
