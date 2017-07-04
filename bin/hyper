@@ -1,0 +1,68 @@
+#!/bin/bash
+#
+#
+PID=$$
+
+source ./bin/hyperutil
+trap "exitfn $PID" INT
+
+DIR="${BASH_SOURCE%/*}"
+
+
+
+
+prompt="$clear_eol$cyan λ > $clear_eol$white"
+
+logo="$(cat $DIR/hyper.log)"
+
+echo -e "$cyan$logo$clear_eol";
+#echo $PID
+
+getShell() {
+  read -p "$prompt" COMMAND
+  printf "$yellow"
+  arrCommand=(${COMMAND// / })
+
+  for i in "${arrCommand[@]}"; do
+    echo "$i"
+  done
+
+  case "$COMMAND" in
+    pid|p*)
+      echo $PID
+
+      ;;
+    ?|help|h*)
+      echo pid help test config
+
+      ;;
+    conf|c*)
+      echo 'config params yay'
+
+      ;;
+    status|st*)
+      echo 'status'
+
+      ;;
+    rev)
+      local LOCALREV=$(git rev-list HEAD | wc -l | tr -d ' ');
+      echo $LOCALREV
+
+      ;;
+    f|F)
+      grouptoaddto="girls"
+      return 0
+      ;;
+    *)
+      #printf %s\\n "Please enter 'M' or 'F'"
+      return 1
+      ;;
+  esac
+  return 1
+}
+
+printf "$clear_eol"
+
+until getShell; do : ; done
+echo "$cyanλ$clear_eol Done.";
+

@@ -157,6 +157,26 @@
       fi
     }
 
+    function asksure() {
+      echo -n "${1:-Are you sure (y/n)?}${x}"
+      while read -r -n 1 -s answer; do
+        if [[ $answer = [YyNn] ]]; then
+          [[ $answer = [Yy] ]] && retval=0
+          [[ $answer = [Nn] ]] && retval=1
+          break
+        fi
+      done
+
+      echo # just a final linefeed, optics...
+
+      return $retval
+    }
+
+    function exitfn() {
+      trap SIGINT              # Restore signal handling for SIGINT
+      echo; echo "Aarghh!!$1"  # Growl at user,
+      exit                     # then exit script.
+    }
     #-----------------------------------------------------------------
 
 

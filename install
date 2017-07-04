@@ -1,0 +1,5 @@
+#!/bin/bash
+source ./bin/hyperutil
+add_bin
+echo "$purple Now you can run λyper commands $clear_eol"
+npm --prefix ./src install

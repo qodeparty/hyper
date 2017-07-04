@@ -3,9 +3,9 @@
 # hyperd    Start/Stop the webapp
 #
 # chkconfig: 345 64 36
-# description: Launcher daemon for Scale Web App
+# description: Launcher daemon
 # processname: appd
-# pidfile: /www/appd.pid
+# pidfile: /www/hyperd.pid
 
 set -o pipefail
 #set -x
@@ -28,7 +28,7 @@ set -o pipefail
 
   #if we dont have init.d assume this is dev
   #dev config
-  BASE_DIR=~/src/scale-product/www
+  BASE_DIR=~/src/hyper/www
   VAR_DIR=$BASE_DIR/tmp
   LOG_DIR=$BASE_DIR/tmp
   APP_DIR="."
