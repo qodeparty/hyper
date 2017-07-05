@@ -1,74 +1,110 @@
 #!/bin/bash
 #
+# hyper
 #
-PID=$$
-stty -ctlecho #hide ctrl-c echo
+#---------------------------------------------------------------
 
-source ./bin/hyper-util
-trap "exitfn $PID" INT
-
-DIR="${BASH_SOURCE%/*}"
-
+  pid=$$
+  dir="${BASH_SOURCE%/*}"
+  stty -ctlecho #hide ctrl-c echo
+  shopt -s histappend
 
 
+#---------------------------------------------------------------
+#
+#
+#
+#
+#---------------------------------------------------------------
 
-prompt="$clear_eol$cyan(λ) > $clear_eol$white"
+  source $dir/hyper-util
+  trap "exitfn $pid" INT
+  #trap "rm $TEMP_FILE; exit" SIGHUP SIGINT SIGTERM
+#---------------------------------------------------------------
+#
+#
+#
+#
+#---------------------------------------------------------------
 
-logo="$(cat $DIR/hyper.log)"
+  bin_dir="$(realpath $dir)"
+  abs_dir="$(dirname $bin_dir)"
+  data_dir="$abs_dir/data"
+  install_dir="$abs_dir"
 
-echo "$cyan$logo$clear_eol";
-#echo $PID
+#---------------------------------------------------------------
+#
+#
+#
+#
+#---------------------------------------------------------------
 
-function getShell() {
-  read -p "$prompt" COMMAND
-  printf "$grey"
-  arrCommand=(${COMMAND// / })
+  cmd="$bin_dir/hyper-cli"
+  prompt="$clear_eol$cyan(λ) > $clear_eol$white"
+  logo="$(cat $data_dir/hyper.log)"
+  echo "$cyan$logo$clear_eol";
 
-  for i in "${arrCommand[@]}"; do
-    echo "arg => $i"
-  done
+#---------------------------------------------------------------
+#
+#
+#
+#
+#---------------------------------------------------------------
 
-  printf "$yellow"
-  case "$COMMAND" in
-    pid|p*)
-      echo $PID
+  function getShell() {
+    read -r -e -p "$prompt" COMMAND
+    history -s "$COMMAND"
 
-      ;;
-    ?|help|h*)
-      echo pid help test config
+    printf "$grey"
+    arrCommand=(${COMMAND// / })
 
-      ;;
-    clear|cl*)
-      clear
-      echo "$cyan$logo$clear_eol";
-      ;;
-    conf|co*)
-      echo 'config'
-      $DIR/hypercmd config .hyper
-      ;;
-    status|st*)
-      echo 'status'
-      $DIR/hypercmd status
-      ;;
-    rev)
-      local LOCALREV=$(git rev-list HEAD | wc -l | tr -d ' ');
-      echo $LOCALREV
+    for i in "${arrCommand[@]}"; do
+      echo "arg => $i"
+    done
 
-      ;;
-    f|F)
-      grouptoaddto="girls"
-      return 0
-      ;;
-    *)
-      #printf %s\\n "Please enter 'M' or 'F'"
-      return 1
-      ;;
-  esac
-  return 1
-}
+    printf "$yellow"
+    case "$COMMAND" in
+      pid|p*)
+        echo $pid
+        ;;
+      q|quit|exit)
+        exitfn $pid
+        return 0
+        ;;
+      ?|help|h*)
+        $cmd help
+        ;;
+      clear|cl*)
+        clear
+        echo "$cyan$logo$clear_eol";
+        ;;
+      conf*|co*)
+        echo 'config'
+        echo $PWD
+        hyper_file="$($cmd config)"
+        . $hyper_file
+        echo $hyper_file
+        get_env HYPER
+        ;;
+      status|st*)
+        echo 'status'
+        $cmd status
+        ;;
+      rev)
+        local LOCALREV=$(git rev-list HEAD | wc -l | tr -d ' ');
+        echo $LOCALREV
+        ;;
+      *)
+        return 1
+        ;;
+    esac
+    return 1
+  }
 
-printf "$clear_eol"
+  printf "$clear_eol"
 
-until getShell; do : ; done
-echo "$cyanλ$clear_eol Done.";
+  until getShell; do : ; done
 
+  echo "$cyanλ$clear_eol Done.";
+
+#---------------------------------------------------------------

@@ -1,0 +1,197 @@
+#!/bin/bash
+#
+# hyper-cli    update build and configuration
+#
+#-----------------------------------------------------------------
+#
+#
+#
+#-----------------------------------------------------------------
+
+	set -o pipefail
+	shopt -s expand_aliases
+
+#-----------------------------------------------------------------
+#
+#
+#
+#-----------------------------------------------------------------
+
+	dir="${BASH_SOURCE%/*}"
+	source $dir/hyper-util
+
+#-----------------------------------------------------------------
+#
+#
+#-----------------------------------------------------------------
+
+	bin_dir="$(realpath $dir)"
+	abs_dir="$(dirname $bin_dir)"
+	data_dir="$abs_dir/data"
+	install_dir="$abs_dir"
+
+	hyper_vars=()
+#-----------------------------------------------------------------
+#
+#
+#
+#-----------------------------------------------------------------
+# tar -cvzf node_modules.tar.gz node_modules/
+# @npm -g ls | grep -v 'npm@' | awk '/@/ {print $2}' | awk -F@ '{print $1}' | xargs npm -g rm
+# @git archive --format zip --output ./hyper-zero.bak.zip master
+# nohup node app/app.js > server.log &
+# tail -f server.log
+#
+#-----------------------------------------------------------------
+
+	function setup_config() {
+		HYPER_CONFIG_FILE="$1"
+		HYPER_TIMESTAMP=$(date +%s)
+		HYPER_SETUP_ROOT=""
+
+		echo "util loaded? $hyper_util_loaded"
+		if [ ! -z "$1" ]; then
+			HYPPER_INSTALL_CONFIG=$(cat <<-EOF
+				#!/bin/bash
+				export HYPER_SETUP_ROOT="${HYPER_SETUP_ROOT}"
+				export HYPER_TIMESTAMP="$(date +%m-%d-%y)"
+			EOF
+			);
+			echo "$HYPER_INSTALL_CONFIG" > ${HYPER_CONFIG_FILE}
+			export HYPER_CONFIG_FILE="$1"
+
+		else
+			echo "Missing .HYPER path"
+			false
+		fi
+
+		unset HYPER_INSTALL_CONFIG
+	}
+
+	function stub(){
+		echo "stub!"
+	}
+
+	function usage() {
+		cat <<-EOF
+			Usage: hyperbuild [-cdnt] <command> [subcommand]
+		EOF
+	}
+#-----------------------------------------------------------------
+#
+#
+#
+#-----------------------------------------------------------------
+	function hyper_help(){
+		echo pid help test config
+	}
+#-----------------------------------------------------------------
+#
+#
+#
+#
+#-----------------------------------------------------------------
+	function hyper_rc_test(){
+		#echo $abs_dir
+		#echo $bin_dir
+		#echo $data_dir
+		#echo $install_dir
+		hyper_config_file="$install_dir/.hyper"
+		if [ ! -z $install_dir ]; then
+			echo 'found instal dir'
+			printf $cyan
+			hyper_config_str="$(hyper_rc_str)"
+
+			echo "$hyper_config_str"
+			#if asksure "Setting up [$cyan.hyper$x]. Does this file look ok? [y/n] >"; then
+			printf 'great!'
+			#fi
+			echo "$hyper_config_str" > ${hyper_config_file}
+
+			printf $clear_eol$yellow
+			#echo "$HYPER_INSTALL_CONFIG" > "$install_dir/.hyper"
+		fi
+	}
+
+
+	function hyper_rc_str(){
+		hyper_config_str="$(cat <<-EOF
+			#!/bin/bash
+			export HYPER_FILE="${hyper_config_file}"
+			export HYPER_BIN_DIR="${bin_dir}"
+			export HYPER_SRC_DIR="${abs_dir}"
+			export HYPER_TIMESTAMP="$(date +%m-%d-%y)"
+			alias hypercd="cd $HYPER_SRC_DIR"
+			[[ \$PATH =~ "\$HYPER_BIN_DIR" ]] && export PATH=\$PATH:\$HYPER_BIN_DIR
+		EOF
+		)";
+		echo "$hyper_config_str"
+	}
+
+
+	function hyper_rc(){
+		hyper_config_file="$install_dir/.hyper"
+		if [ ! -z $install_dir ]; then
+			hyper_config_str="$(hyper_rc_str)"
+			echo "$hyper_config_str" > ${hyper_config_file}
+			chmod +x ${hyper_config_file}
+		fi
+		echo "${hyper_config_file}"
+	}
+#-----------------------------------------------------------------
+#
+#
+#
+#
+#-----------------------------------------------------------------
+	function hyper_install(){
+		stub
+	}
+#-----------------------------------------------------------------
+#
+#
+#
+#
+#
+#-----------------------------------------------------------------
+	function nuke(){
+		stub
+	}
+#-----------------------------------------------------------------
+#
+#
+#
+#-----------------------------------------------------------------
+	function hyper_shell(){
+		stub
+	}
+#-----------------------------------------------------------------
+#
+#
+#
+#
+#
+#-----------------------------------------------------------------
+
+case "$1" in
+		update)
+			usage
+			#checkMessage
+			;;
+		rev)
+			usage
+			;;
+		conf*)
+			echo "$(hyper_rc)"
+			;;
+		local)
+			usage
+			true
+			;;
+		*)
+	echo $"Usage: $NAME { stub }"
+	exit 1
+esac
+exit $?
+#-----------------------------------------------------------------
+
