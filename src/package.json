@@ -1,46 +1,4 @@
 {
-  "_args": [
-    [
-      {
-        "raw": "hyper",
-        "scope": null,
-        "escapedName": "hyper",
-        "name": "hyper",
-        "rawSpec": "",
-        "spec": "latest",
-        "type": "tag"
-      },
-      "/media/sf_code/src/projects"
-    ]
-  ],
-  "_from": "hyper@latest",
-  "_id": "hyper@0.0.3",
-  "_inCache": true,
-  "_installable": true,
-  "_location": "/hyper",
-  "_npmUser": {
-    "name": "qodeninja",
-    "email": "qodeninja@outlook.com"
-  },
-  "_npmVersion": "2.0.0",
-  "_phantomChildren": {},
-  "_requested": {
-    "raw": "hyper",
-    "scope": null,
-    "escapedName": "hyper",
-    "name": "hyper",
-    "rawSpec": "",
-    "spec": "latest",
-    "type": "tag"
-  },
-  "_requiredBy": [
-    "#USER"
-  ],
-  "_resolved": "https://registry.npmjs.org/hyper/-/hyper-0.0.2.tgz",
-  "_shasum": "0b65c5c55ecf1d8ffc82c08300a22e332892e03a",
-  "_shrinkwrap": null,
-  "_spec": "hyper",
-  "_where": "/media/sf_code/src/projects",
   "author": {
     "name": "Avi Damasi",
     "email": "qodeninja@outlook.com",
@@ -48,6 +6,11 @@
   },
   "bugs": {
     "url": "https://github.com/qodeparty/hyper/issues"
+  },
+  "bin": {
+    "hyper": "./bin/hyper",
+    "hyperd": "./bin/hyperd",
+    "hyper-cli": "./bin/hyper-cli"
   },
   "dependencies": {
     "async": "^2.1.4",

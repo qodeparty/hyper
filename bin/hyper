@@ -44,15 +44,58 @@
   logo="$(cat $data_dir/hyper.log)"
   echo "$cyan$logo$clear_eol";
 
+
+  function prompt() {
+    local base="λ"
+    local color="${2:-$cyan}"
+    local sub_cmd="${1:-}"
+    local arr="${3:-<}"
+    [ ! -z $sub_cmd ] && sub_cmd=" $sub_cmd$clear_eol"
+    printf "$clear_eol$color(%s%s) $arr $clear_eol$white" "${base}" "$sub_cmd"
+  }
 #---------------------------------------------------------------
 #
 #
 #
 #
 #---------------------------------------------------------------
+  function getSubShell() {
+    SUBSHELL="$1"
+
+    read -r -e -p "$(prompt $SUBSHELL $blue \>)" SUBCOMMAND
+    printf "$purple"
+    arrCommand=(${COMMAND// / })
+    for i in "${arrCommand[@]}"; do
+      echo "arg => $i"
+    done
+
+    case "$SUBCOMMAND" in
+      list|view|options)
+        echo $SUBCOMMAND
+        #"$($SUBSHELL $SUBCOMMAND)"
+        return 0
+        ;;
+      *)
+        echo "End $SUBSHELL"
+        SUBSHELL=
+        return 0
+        ;;
+    esac
+    return 1
+    printf "$clear_eol"
+    #view
+    #edit
+    #list
+    #update
+    #options
+    #save
+    #set
+
+  }
+
 
   function getShell() {
-    read -r -e -p "$prompt" COMMAND
+    read -r -e -p "$(prompt $SUBSHELL)" COMMAND
     history -s "$COMMAND"
 
     printf "$grey"
@@ -64,6 +107,10 @@
 
     printf "$yellow"
     case "$COMMAND" in
+      debug)
+        SUBSHELL='debug'
+        until getSubShell $SUBSHELL; do : ; done
+        ;;
       pid|p*)
         echo $pid
         ;;
@@ -78,16 +125,20 @@
         clear
         echo "$cyan$logo$clear_eol";
         ;;
+      cat*)
+        data="$($cmd cat ${arrCommand[2]})"
+        echo "$data"
+        ;;
       conf*|co*)
-        echo 'config'
-        echo $PWD
         hyper_file="$($cmd config)"
         . $hyper_file
-        echo $hyper_file
         get_env HYPER
+        SUBSHELL='config'
+        until getSubShell $SUBSHELL; do : ; done
         ;;
       status|st*)
-        echo 'status'
+        SUBSHELL='status'
+        until getSubShell $SUBSHELL; do : ; done
         $cmd status
         ;;
       rev)

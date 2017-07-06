@@ -30,6 +30,7 @@
 	data_dir="$abs_dir/data"
 	install_dir="$abs_dir"
 
+	hyper_config_file="$install_dir/.hyper"
 	hyper_vars=()
 #-----------------------------------------------------------------
 #
@@ -43,34 +44,6 @@
 # tail -f server.log
 #
 #-----------------------------------------------------------------
-
-	function setup_config() {
-		HYPER_CONFIG_FILE="$1"
-		HYPER_TIMESTAMP=$(date +%s)
-		HYPER_SETUP_ROOT=""
-
-		echo "util loaded? $hyper_util_loaded"
-		if [ ! -z "$1" ]; then
-			HYPPER_INSTALL_CONFIG=$(cat <<-EOF
-				#!/bin/bash
-				export HYPER_SETUP_ROOT="${HYPER_SETUP_ROOT}"
-				export HYPER_TIMESTAMP="$(date +%m-%d-%y)"
-			EOF
-			);
-			echo "$HYPER_INSTALL_CONFIG" > ${HYPER_CONFIG_FILE}
-			export HYPER_CONFIG_FILE="$1"
-
-		else
-			echo "Missing .HYPER path"
-			false
-		fi
-
-		unset HYPER_INSTALL_CONFIG
-	}
-
-	function stub(){
-		echo "stub!"
-	}
 
 	function usage() {
 		cat <<-EOF
@@ -91,52 +64,65 @@
 #
 #
 #-----------------------------------------------------------------
-	function hyper_rc_test(){
-		#echo $abs_dir
-		#echo $bin_dir
-		#echo $data_dir
-		#echo $install_dir
-		hyper_config_file="$install_dir/.hyper"
-		if [ ! -z $install_dir ]; then
-			echo 'found instal dir'
-			printf $cyan
-			hyper_config_str="$(hyper_rc_str)"
 
-			echo "$hyper_config_str"
-			#if asksure "Setting up [$cyan.hyper$x]. Does this file look ok? [y/n] >"; then
-			printf 'great!'
-			#fi
-			echo "$hyper_config_str" > ${hyper_config_file}
-
-			printf $clear_eol$yellow
-			#echo "$HYPER_INSTALL_CONFIG" > "$install_dir/.hyper"
-		fi
-	}
-
-
-	function hyper_rc_str(){
+	function hyper_config_rc_str(){
 		hyper_config_str="$(cat <<-EOF
 			#!/bin/bash
 			export HYPER_FILE="${hyper_config_file}"
 			export HYPER_BIN_DIR="${bin_dir}"
 			export HYPER_SRC_DIR="${abs_dir}"
-			export HYPER_TIMESTAMP="$(date +%m-%d-%y)"
+			export HYPER_TIMESTAMP="$(date +%s)"
 			alias hypercd="cd $HYPER_SRC_DIR"
-			[[ \$PATH =~ "\$HYPER_BIN_DIR" ]] && export PATH=\$PATH:\$HYPER_BIN_DIR
+			[[ \$PATH != *"$HYPER_BIN_DIR"* ]] && export PATH=\$PATH:\$HYPER_BIN_DIR
 		EOF
 		)";
 		echo "$hyper_config_str"
 	}
 
 
-	function hyper_rc(){
-		hyper_config_file="$install_dir/.hyper"
+	function hyper_config_rc(){
+		hyper_config_rc_str="$install_dir/.hyper"
 		if [ ! -z $install_dir ]; then
-			hyper_config_str="$(hyper_rc_str)"
+			hyper_config_str="$(hyper_config_rc_str)"
 			echo "$hyper_config_str" > ${hyper_config_file}
 			chmod +x ${hyper_config_file}
 		fi
 		echo "${hyper_config_file}"
+	}
+
+	function hyper_config(){
+
+		COMMAND="$1"
+		arrCommand=(${COMMAND// / })
+
+    for i in "${arrCommand[@]}"; do
+      echo "arg => $i"
+    done
+
+    case "$SUBCOMMAND" in
+      save)
+        echo $SUBCOMMAND
+        return 0
+        ;;
+      load)
+        echo $SUBCOMMAND
+        return 0
+        ;;
+      *)
+        echo "End $SUBCOMMAND"
+        return 0
+        ;;
+    esac
+
+	}
+#-----------------------------------------------------------------
+#
+#
+#
+#
+#-----------------------------------------------------------------
+	function hyper_cat(){
+		echo "$(cat $hyper_config_file)"
 	}
 #-----------------------------------------------------------------
 #
@@ -182,7 +168,11 @@ case "$1" in
 			usage
 			;;
 		conf*)
-			echo "$(hyper_rc)"
+			#hyper_config
+			echo "$(hyper_config_rc)"
+			;;
+		cat*)
+			echo "$(hyper_cat $2)"
 			;;
 		local)
 			usage

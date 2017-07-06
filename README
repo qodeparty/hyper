@@ -39,6 +39,17 @@
 
 ---
 
+  Installation
+  > source ./install --prof --npm
+
+    --prof | link hyper/bin to your env path
+    --npm  | run npm install
+
+  Once you've installed Hyper, you can run the hyper-cli
+  > hyper
+
+---
+
   TODO:Cleanup & update libs to ES6
 
 ---

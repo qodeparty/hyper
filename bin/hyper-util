@@ -37,6 +37,10 @@
 
 		#-----------------------------------------------------------------
 
+		function _key(){
+		    IFS= read -r -s -n1 -d '' "${@:-_KEY}"
+		}
+
 		function command_exists () {
 				type "$1" &> /dev/null ;
 		}
@@ -83,7 +87,7 @@
 			local PATTERN=$1
 			if [ -n $PATTERN ]; then
 				IFS="="
-				set | grep "^HYPER[=_]+*$" | while read -r line value ; do
+				set | grep "^HYPER[=_]+*" | while read -r line value ; do
 					echo -e "$line"
 				done
 			fi
@@ -192,17 +196,13 @@
 		}
 
 		function bash_profile(){
-
 			source_file="$(realpath $1)"
 			match="source ${source_file}"
 			file=${2:-$HOME/.profile}
 			[ ! -f $file ] && touch $file
-
 			found=$(perl_match "$match" "$file")
-
 			[ -z "$found" ] && printf "%s\\n" "${match}" >> $file
-
-			echo ${found:-not found} $file $match
+			#echo ${found:-not found} $file $match
 
 		}
 		#-----------------------------------------------------------------

@@ -2,6 +2,6 @@
 export HYPER_FILE="/home/qodeninja/src/projects/nodejs/hyper/.hyper"
 export HYPER_BIN_DIR="/home/qodeninja/src/projects/nodejs/hyper/bin"
 export HYPER_SRC_DIR="/home/qodeninja/src/projects/nodejs/hyper"
-export HYPER_TIMESTAMP="07-05-17"
+export HYPER_TIMESTAMP="1499318255"
 alias hypercd="cd /home/qodeninja/src/projects/nodejs/hyper"
-[[ $PATH =~ "$HYPER_BIN_DIR" ]] && export PATH=$PATH:$HYPER_BIN_DIR
+[[ $PATH != *"/home/qodeninja/src/projects/nodejs/hyper/bin"* ]] && export PATH=$PATH:$HYPER_BIN_DIR
