@@ -43,7 +43,7 @@ node_modules
 .lock-wscript
 *-local*
 local.*
-bak.*
+*bak*
 __*
 data
 cache
