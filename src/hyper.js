@@ -34,8 +34,8 @@
 /////////////////////////////////////////////////////////////////////////////*/  
 
   try{
-    console.log("================== λyper ===================");
-    let hyper = initServer({sky:'blue'});
+    console.log("================== hyper ===================");
+    let hyper = initServer({sky:'blue', PORT:3000});
 
     // hyper.registerHooks([
     //   'mount',
@@ -53,15 +53,22 @@
 
     hyper.on('init', function(e){
       console.log('init event yay', e);
+      this.start();
     });
 
     hyper.on('config', function(e){
       console.log('config changed', this.config);
     });
 
-    hyper.run();
+    hyper.on('start', function(e){
+      console.log('get ready to run!', e);
+      this.run();
+    });
 
-    console.log(hyper);
+
+    
+
+    //console.log(hyper);
   }catch(err){
     console.error(err);
     process.exit(1);
