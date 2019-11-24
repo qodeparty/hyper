@@ -1,8 +1,7 @@
-*.log
-*.bak
+
 *.pid
 *-dev*
-*-local*
+
 __*
 *node_modules/
 lib/*/node_modules/
@@ -42,10 +41,8 @@ node_modules
 
 # Users Environment Variables
 .lock-wscript
-
+*-local*
 local.*
-local-*
-bak-*
 bak.*
 __*
 data
